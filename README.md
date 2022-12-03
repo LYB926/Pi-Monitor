@@ -1,0 +1,2 @@
+# Pi-Monitor
+将SGP30气体传感器和树莓派收集到的空气质量信息通过Socket发送到服务器，并且使用Flask和pyecharts实时显示在网页上。
