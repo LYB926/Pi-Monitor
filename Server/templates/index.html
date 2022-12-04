@@ -22,7 +22,7 @@
         function fetchData() {
             $.ajax({
                 type: "GET",
-                url: "http://127.0.0.1:5000/updateChart",
+                url: "http://wisp.fun/updateChart",
                 dataType: 'json',
                 success: function (result) {
                     chart.setOption(result);
