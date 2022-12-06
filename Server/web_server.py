@@ -9,7 +9,7 @@ from flask_cors import CORS
 # Socket库和配置 
 import threading
 from socket import *
-msg_num = 0
+msg_eCO2 = 0
 def socket_thr():
     IP = ''         # 主机地址为空，表示绑定本机所有网络接口IP地址
     PORT = 50000    # 服务端口号
@@ -29,9 +29,13 @@ def socket_thr():
         if not recv_msg:                    # 如果消息为空表示连接已关闭，退出循环    
             break
         
-        global msg_num
+        global msg_eCO2
+        global msg_TVOC
         msg = recv_msg.decode()             # 将收到的消息解码为字符串
-        msg_num = float(msg)
+
+        temp_msg = msg.split(',',1)
+        msg_eCO2 = float(temp_msg[0])
+        msg_TVOC = float(temp_msg[1])
         print(f'Message received: {msg}')
         # 编码，向Client发送消息
         # dataSocket.send(f'Server message received: {msg}'.encode())
@@ -47,23 +51,29 @@ socket_thread.start()
 app = Flask(__name__, static_folder="templates")
 CORS(app, resources=r'/*')
 timeList = [strftime('%H:%M:%S') for __ in range(32)]
-dataList = [0 for _ in range(32)]
+data_eCO2 = [0 for _ in range(32)]
+data_TVOC = [0 for _ in range(32)]
 
 def Line_base() -> Line:
     timeIndex = strftime('%H:%M:%S')
     timeList.pop(0)
     timeList.append(timeIndex)
-    # dataNext = randrange(0, 20)
-    dataNext = msg_num
-    dataList.pop(0)
-    dataList.append(dataNext)
-    # print (msg_num+1.5)
+
+    dataNext_eCO2 = msg_eCO2
+    data_eCO2.pop(0)
+    data_eCO2.append(dataNext_eCO2)
+
+    dataNext_TVOC = msg_eCO2
+    data_TVOC.pop(0)
+    data_TVOC.append(dataNext_TVOC)
+
+    # print (msg_eCO2+1.5)
     c = (
         Line()
         .add_xaxis(timeList)
-        .add_yaxis("VCC", dataList)
-        #.add_yaxis("商家B", [randrange(0, 100) for _ in range(6)])
-        .set_global_opts(title_opts=opts.TitleOpts(title="VCC Monitor", subtitle=""))
+        .add_yaxis("CO2EQ(ppm)", data_eCO2)
+        .add_yaxis("TVOC(ppb)", data_TVOC)
+        .set_global_opts(title_opts=opts.TitleOpts(title="Pi-Monitor", subtitle=""))
     )
     return c
 

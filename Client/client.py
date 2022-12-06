@@ -41,7 +41,7 @@ while True:
         print("Warning: Incorrect sensor data.")
     #toSendMsg = input('>>>' )            # 从终端读取用户输入
     #toSendMsg = str(randrange(0, 20))
-    toSendMsg = str(eCO2)
+    toSendMsg = str(eCO2)+','+str(TVOC)
     if toSendMsg == '114514':
         break
     dataSocket.send(toSendMsg.encode())  # 编码发送消息
