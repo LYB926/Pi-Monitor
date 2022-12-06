@@ -1,5 +1,4 @@
 # 后端Flask使用库
-from random import randrange
 from flask import Flask, render_template
 from pyecharts import options as opts
 from pyecharts.charts import Line
@@ -9,7 +8,7 @@ from flask_cors import CORS
 # Socket库和配置 
 import threading
 from socket import *
-msg_eCO2 = 0
+# msg_eCO2 = 0
 def socket_thr():
     IP = ''         # 主机地址为空，表示绑定本机所有网络接口IP地址
     PORT = 50000    # 服务端口号
@@ -47,6 +46,7 @@ def socket_thr():
 socket_thread = threading.Thread(target=socket_thr)
 socket_thread.start()
 
+
 # 后端工作函数
 app = Flask(__name__, static_folder="templates")
 CORS(app, resources=r'/*')
@@ -67,13 +67,12 @@ def Line_base() -> Line:
     data_TVOC.pop(0)
     data_TVOC.append(dataNext_TVOC)
 
-    # print (msg_eCO2+1.5)
     c = (
         Line()
         .add_xaxis(timeList)
         .add_yaxis("CO2EQ(ppm)", data_eCO2)
         .add_yaxis("TVOC(ppb)", data_TVOC)
-        .set_global_opts(title_opts=opts.TitleOpts(title="Pi-Monitor", subtitle=""))
+        .set_global_opts(title_opts=opts.TitleOpts(title="Pi-Monitor", subtitle="空气质量实时数据"))
     )
     return c
 

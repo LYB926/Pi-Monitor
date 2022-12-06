@@ -1,7 +1,6 @@
 # ===Pi-Monitor TCP Client ===
 from socket import *
 import time
-from random import randrange
 
 # 使用SGP30传感器库
 import RTrobot_SGP30
@@ -39,8 +38,7 @@ while True:
         eCO2 = 0
         TVOC = 0
         print("Warning: Incorrect sensor data.")
-    #toSendMsg = input('>>>' )            # 从终端读取用户输入
-    #toSendMsg = str(randrange(0, 20))
+        
     toSendMsg = str(eCO2)+','+str(TVOC)
     if toSendMsg == '114514':
         break
