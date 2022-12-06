@@ -28,7 +28,7 @@ sudo a2enmod proxy proxy_http
 ProxyPass /monitor http://localhost:5000
 ProxyPassReverse /monitor http://localhost:5000  
 ProxyPass /updateChart http://localhost:5000/updateChart 
-ProxyPassReverse /updateChart http://localhost:8080/updateChart  
+ProxyPassReverse /updateChart http://localhost:5000/updateChart  
 ```
 重新启动 Apache 服务：
 ```
@@ -36,4 +36,21 @@ sudo service apache2 restart
 ```
 访问 http://somedomain.com/monitor 即可查看数据展示页面。
 ### 树莓派端
-Developing……
+SGP30 传感器使用 I2C 总线与树莓派连接，接线如下：
+|  Raspberry Pi Board GPIO  | SGP30 Sensor  |
+|  ----  | ----  |
+| GPIO.3(SDA)  | SDA |
+| GPIO.4(5V)  | VCC |
+| GPIO.5(SCL)  | SCL |
+| GPIO.6(GND)  | GND |
+
+并且在树莓派上安装I2C包：
+```
+sudo apt-get install -y python3-smbus
+sudo apt-get install -y i2c-tools
+```
+修改`Client/client.py`中第9行的服务器IP为你服务器的IP地址，运行即可：
+```
+python3 client.py
+```
+在运行代码时，请确保先运行服务器端，再运行树莓派端。
