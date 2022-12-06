@@ -1,11 +1,26 @@
-# === TCP Client ===
+# ===Pi-Monitor TCP Client ===
 from socket import *
 import time
 from random import randrange
 
-IP = '139.224.246.156'
+# 读取传感器信息
+import threading
+import RTrobot_SGP30
+
+# Socket和传感器的参数设置
+IP = '127.0.0.1'
 SERVER_PORT = 50000
 BUFLEN = 512
+SENSOR = RTrobot_SGP30.RTrobot_SGP30()
+
+# 传感器初始化
+SGP30_Serial_ID = SENSOR.SGP30_Init()
+if SGP30_Serial_ID == False:
+    print("Fatal error: SGP30 sensor initialization failed.")
+else:
+    print("SGP30 sensor initialization register finished.")
+    print("Ready to start data transfer via Socket.")
+time.sleep(0.1)
 
 # 实例化Socket对象，指名协议
 dataSocket = socket(AF_INET, SOCK_STREAM)
