@@ -63,7 +63,7 @@ def Line_base() -> Line:
     data_eCO2.pop(0)
     data_eCO2.append(dataNext_eCO2)
 
-    dataNext_TVOC = msg_eCO2
+    dataNext_TVOC = msg_TVOC
     data_TVOC.pop(0)
     data_TVOC.append(dataNext_TVOC)
 
