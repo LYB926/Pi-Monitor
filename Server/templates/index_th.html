@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Pi-Monitor</title>
+    <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+
+</head>
+<body>
+    <center>
+        <img src="https://camo.githubusercontent.com/24441f737bb1bf221cc706774c9e29d8246d8e44153ac405b79ba0758449ed2c/687474703a2f2f776973702e66756e2f77702d636f6e74656e742f75706c6f6164732f323032322f31322f50692d4d6f6e69746f722e706e67" width="226" height="83" alt="Pi-Monitor LOGO">
+    </center>
+    <center>
+        <div id="bar" style="width:1100px; height:330px;"></div>
+    </center>
+    <center>
+        <div id="bar2" style="width:1100px; height:330px;"></div>
+    </center>
+    <h2 style="margin-left:85px;">数据含义</h2>
+    <ul style="margin-left:85px;">
+        <li><strong>CO<sub>2</sub>EQ(Carbon Dioxide Equivalent)</strong>：即二氧化碳当量，这个指标将空气中有机成分（包括二氧化碳）的量转换为当量的二氧化碳来进行比较。</li>
+        <li><strong>TVOC(Total Volatile Organic Compounds)</strong>：即总挥发性有机化合物，这些有机物会在常温下以气体形式存在并且被人类吸入，例如从家具和油漆中挥发出的甲醛。</li>
+    </ul>
+    <h2 style="margin-left:85px;">TVOC推荐值</h2>
+    <center>
+    <table border="1">
+        <tr>
+            <th>水平</th> <th>卫生规定值</th> <th>推荐</th> <th>暴露限值</th> <th>TVOC(ppb)</th>
+        </tr>
+        <tr> 
+            <td>5-不健康</td> <td>情况不可接受</td> <td>仅在不可避免/强通风时暴露</td> <td>几小时</td> <td>2200-5500</td>
+        </tr>
+        <tr>
+            <td>4-差</td> <td>稍多问题</td> <td>必须加强透气/寻找更多通风来源</td> <td><1个月</td> <td>660-2200</td>
+        </tr>
+        <tr>
+            <td>3-中度</td> <td>稍有问题</td> <td>推荐加强透气/寻找更多通风来源</td> <td><12个月</td> <td>220-660</td>
+        </tr>
+        <tr>
+            <td>2-好</td> <td>无问题</td> <td>推荐加强透气/通风</td> <td>无限</td> <td>65-220</td>
+        </tr>
+        <tr>
+            <td>1-很好</td> <td>无问题</td> <td>目标值</td> <td>无限</td> <td>0-65</td>
+        </tr>
+    </table>
+    <p>注：此标准来自德国联邦环境署。</p>
+    </center>
+    <h2 style="margin-left:85px;">关于Pi-Monitor</h2>
+    <ul style="margin-left:85px;">
+        <li>Pi-Monitor 是一个开源项目，我们使用安装在树莓派上的 SGP30 气体传感器收集当前环境空气中的 VOC（挥发性有机化合物）和 CO2EQ（二氧化碳当量）数据，并且将这些数据经由 Socket 实时发送到服务器，在服务器端使用 Flask 框架和 pyecharts 库实时显示空气质量数据。</li>
+        <li>您可以在 <a href="https://github.com/LYB926/Pi-Monitor">http://github.com/LYB926/Pi-Monitor</a> 获取本项目的源代码；同时，此页面也提供说明帮助您部署此项目。</li>
+    </ul>
+
+
+    <script>
+        var chart = echarts.init(document.getElementById('bar'), 'white', {renderer: 'canvas'});
+
+        $(
+            function () {
+                fetchData(chart);
+                setInterval(fetchData, 2000);
+            }
+        );
+
+        function fetchData() {
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:5000/updateChart",
+                dataType: 'json',
+                success: function (result) {
+                    chart.setOption(result);
+                }
+            });
+        }
+
+        var chart2 = echarts.init(document.getElementById('bar2'), 'white', {renderer: 'canvas'});
+        $(
+            function () {
+                fetchData(chart2);
+                setInterval(fetchData2, 2000);
+            }
+        );
+        function fetchData2() {
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:5000/updateChart2",
+                dataType: 'json',
+                success: function (result) {
+                    chart2.setOption(result);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
