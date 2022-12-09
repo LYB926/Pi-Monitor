@@ -32,7 +32,8 @@ def socket_thr():
         global msg_TVOC
         msg = recv_msg.decode()             # 将收到的消息解码为字符串
 
-        temp_msg = msg.split(',',1)
+        #temp_msg = msg.split(',',1)
+        temp_msg = msg.split(',')
         msg_eCO2 = float(temp_msg[0])
         msg_TVOC = float(temp_msg[1])
         print(f'Message received: {msg}')
