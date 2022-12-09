@@ -12,11 +12,11 @@
         <img src="https://camo.githubusercontent.com/24441f737bb1bf221cc706774c9e29d8246d8e44153ac405b79ba0758449ed2c/687474703a2f2f776973702e66756e2f77702d636f6e74656e742f75706c6f6164732f323032322f31322f50692d4d6f6e69746f722e706e67" width="226" height="83" alt="Pi-Monitor LOGO">
     </center>
     <center>
-        <div id="bar" style="width:1100px; height:330px;"></div>
+        <div id="bar" style="width:1250px; height:660px;"></div>
     </center>
-    <center>
+    <!-- <center>
         <div id="bar2" style="width:1100px; height:330px;"></div>
-    </center>
+    </center> -->
     <h2 style="margin-left:85px;">数据含义</h2>
     <ul style="margin-left:85px;">
         <li><strong>CO<sub>2</sub>EQ(Carbon Dioxide Equivalent)</strong>：即二氧化碳当量，这个指标将空气中有机成分（包括二氧化碳）的量转换为当量的二氧化碳来进行比较。</li>
@@ -74,23 +74,23 @@
             });
         }
 
-        var chart2 = echarts.init(document.getElementById('bar2'), 'white', {renderer: 'canvas'});
-        $(
-            function () {
-                fetchData(chart2);
-                setInterval(fetchData2, 2000);
-            }
-        );
-        function fetchData2() {
-            $.ajax({
-                type: "GET",
-                url: "http://127.0.0.1:5000/updateChart2",
-                dataType: 'json',
-                success: function (result) {
-                    chart2.setOption(result);
-                }
-            });
-        }
+        // var chart2 = echarts.init(document.getElementById('bar2'), 'white', {renderer: 'canvas'});
+        // $(
+        //     function () {
+        //         fetchData(chart2);
+        //         setInterval(fetchData2, 2000);
+        //     }
+        // );
+        // function fetchData2() {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "http://127.0.0.1:5000/updateChart2",
+        //         dataType: 'json',
+        //         success: function (result) {
+        //             chart2.setOption(result);
+        //         }
+        //     });
+        // }
     </script>
 </body>
 </html>
